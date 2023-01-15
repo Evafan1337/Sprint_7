@@ -11,13 +11,19 @@ import java.util.ArrayList;
 
 public class OrderTest {
 
+    public String firstName;
+    public String lastName;
+    public String address;
+    public int metroStation;
+    public String phone;
+    public int rentTime;
+    public String deliveryDate;
+    public String comment;
+    public ArrayList<String> color;
+
     @Before
     public void setUp(){
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
-    }
-
-    @Test
-    public void createOrder(){
 
         String firstName = "Naruto";
         String lastName = "Uchiha";
@@ -29,6 +35,10 @@ public class OrderTest {
         String comment = "Saske, come back to Konoha";
         ArrayList<String> color = new ArrayList<String>();
         color.add("BLACK");
+    }
+
+    @Test
+    public void createOrder(){
 
         CreateOrder newOrderData = new CreateOrder(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
 
@@ -40,8 +50,41 @@ public class OrderTest {
             .post("/api/v1/orders")
             .body()
             .as(CreateOrderResponse.class);
+    }
 
-        System.out.println(response.getTrack());
+    @Test
+    public void createOrderWithoutColor(){
+
+        this.color = new ArrayList<String>();
+
+        CreateOrder newOrderData = new CreateOrder(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
+
+        CreateOrderResponse response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(newOrderData)
+                .when()
+                .post("/api/v1/orders")
+                .body()
+                .as(CreateOrderResponse.class);
 
     }
+
+    @Test
+    public void createOrderWithManyColors(){
+        this.color = new ArrayList<String>();
+        color.add("GREY");
+        color.add("BLACK");
+
+        CreateOrder newOrderData = new CreateOrder(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
+
+        given()
+            .header("Content-type", "application/json")
+            .and()
+            .body(newOrderData)
+            .when()
+            .post("/api/v1/orders")
+            .then().statusCode(201);
+    }
+
 }
