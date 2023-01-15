@@ -67,7 +67,6 @@ public class OrderTest {
                 .post("/api/v1/orders")
                 .body()
                 .as(CreateOrderResponse.class);
-
     }
 
     @Test
@@ -87,4 +86,17 @@ public class OrderTest {
             .then().statusCode(201);
     }
 
+    @Test
+    public void getOrders(){
+
+        GetOrdersResponse response = given()
+            .header("Content-type", "application/json")
+            .and()
+            .when()
+            .get("/api/v1/orders")
+            .body()
+            .as(GetOrdersResponse.class);
+
+        System.out.println(response.getOrders());
+    }
 }
