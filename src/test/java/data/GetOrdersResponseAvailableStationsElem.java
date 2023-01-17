@@ -1,6 +1,6 @@
 package data;
 
-public class GetOrdersResponseAvaliableStationsElem {
+public class GetOrdersResponseAvailableStationsElem {
 
     private String name;
     private String number;

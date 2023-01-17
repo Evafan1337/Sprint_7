@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public class GetOrdersResponseAvaliableStations {
 
-    private ArrayList<GetOrdersResponseAvaliableStationsElem> avaliableStations;
+    private ArrayList<GetOrdersResponseAvailableStationsElem> avaliableStations;
 }

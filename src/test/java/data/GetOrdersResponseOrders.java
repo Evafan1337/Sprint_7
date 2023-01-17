@@ -14,14 +14,4 @@ public class GetOrdersResponseOrders {
     public void setOrders(List<GetOrdersResponseOrdersElem> orders) {
         this.orders = orders;
     }
-
-    //    private ArrayList<GetOrdersResponseOrdersElem> orders;
-//
-//    public ArrayList<GetOrdersResponseOrdersElem> getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(ArrayList<GetOrdersResponseOrdersElem> orders) {
-//        this.orders = orders;
-//    }
 }
