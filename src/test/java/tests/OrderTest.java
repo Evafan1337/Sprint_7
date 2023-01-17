@@ -25,15 +25,15 @@ public class OrderTest {
     public void setUp(){
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
 
-        String firstName = "Naruto";
-        String lastName = "Uchiha";
-        String address = "Konoha, 142 apt.";
-        int metroStation = 4;
-        String phone = "+7 800 355 35 35";
-        int rentTime = 5;
-        String deliveryDate = "2020-06-06";
-        String comment = "Saske, come back to Konoha";
-        ArrayList<String> color = new ArrayList<String>();
+        firstName = "Naruto";
+        lastName = "Uchiha";
+        address = "Konoha, 142 apt.";
+        metroStation = 4;
+        phone = "+7 800 355 35 35";
+        rentTime = 5;
+        deliveryDate = "2020-06-06";
+        comment = "Saske, come back to Konoha";
+        color = new ArrayList<String>();
         color.add("BLACK");
     }
 

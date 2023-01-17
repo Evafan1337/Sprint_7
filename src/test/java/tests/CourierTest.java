@@ -1,161 +1,78 @@
 package tests;
 import data.*;
+import fixtures.CourierHelper;
+import io.restassured.internal.RestAssuredResponseImpl;
+import io.restassured.response.ResponseBody;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import io.restassured.RestAssured;
 
+import java.util.ArrayList;
+
 public class CourierTest {
+
+
+    ArrayList <CourierHelper> createdCouriers = new ArrayList<CourierHelper>();;
 
     @Before
     public void setUp(){
+
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
     }
 
 
     @Test
     public void createCourierTest(){
-        System.out.println("createCourierTest");
-
-        NewCourier newCourierData = new NewCourier("5555_new_ninja", "1234", "saske");
-        LoginCourier loginCourierData = new LoginCourier("5555_new_ninja","1234");
-
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(newCourierData)
-            .when()
-            .post("/api/v1/courier")
-            .then().statusCode(201);
-
-        LoginCourierResponse response = given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(loginCourierData)
-            .when()
-            .post("/api/v1/courier/login")
-            .body()
-            .as(LoginCourierResponse.class);
-
-        DeleteCourier deleteCourierData = new DeleteCourier(response.getId());
-
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(deleteCourierData)
-            .when()
-            .delete("/api/v1/courier/"+response.getId())
-            .then().statusCode(200);
+        CourierHelper courier = new CourierHelper("crt_3_new_ninja", "1234", "saske");
+        int courierCreateStatusCode = courier.getCourierCreateStatusCode();
+        createdCouriers.add(courier);
+        assert courierCreateStatusCode == 201;
     }
 
     @Test
     public void createCourierReturnsTrue(){
-        NewCourier newCourierData = new NewCourier("true_555_new_ninja", "1234", "saske");
-        LoginCourier loginCourierData = new LoginCourier("true_555_new_ninja","1234");
-
-        CreateCourierResponse createCourierResponse = given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(newCourierData)
-            .when()
-            .post("/api/v1/courier")
-            .body()
-            .as(CreateCourierResponse.class);
-
-        LoginCourierResponse response = given()
-                .header("Content-type", "application/json")
-                .and()
-                .body(loginCourierData)
-                .when()
-                .post("/api/v1/courier/login")
-                .body()
-                .as(LoginCourierResponse.class);
-
-        DeleteCourier deleteCourierData = new DeleteCourier(response.getId());
-
-        given()
-                .header("Content-type", "application/json")
-                .and()
-                .body(deleteCourierData)
-                .when()
-                .delete("/api/v1/courier/"+response.getId())
-                .then().statusCode(200);
+        CourierHelper courier = new CourierHelper("crt_4_new_ninja_true", "1234", "saske");
+        CreateCourierResponse response = courier.getCourier().as(CreateCourierResponse.class);
+        createdCouriers.add(courier);
+        assert response.getOk() == "true";
     }
 
-    //Testing response code? For example: looking for 400?
     @Test
     public void failCreatingCourierWithoutLogin(){
-        NewCourier newCourierData = new NewCourier("", "1234", "saske");
-        LoginCourier loginCourierData = new LoginCourier("5555_new_ninja","1234");
-
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(newCourierData)
-            .when()
-            .post("/api/v1/courier")
-            .then().statusCode(400);
+        CourierHelper courier = new CourierHelper("", "1234", "saske");
+        int courierCreateStatusCode = courier.getCourierCreateStatusCode();
+        assert courierCreateStatusCode == 400;
     }
 
     @Test
     public void failCreatingCourierWithoutPassword(){
-
-        NewCourier newCourierData = new NewCourier("5555_new_ninja", "", "saske");
-        LoginCourier loginCourierData = new LoginCourier("5555_new_ninja","1234");
-
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(newCourierData)
-            .when()
-            .post("/api/v1/courier")
-            .then().statusCode(400);
+        CourierHelper courier = new CourierHelper("fail_create", "", "saske");
+        int courierCreateStatusCode = courier.getCourierCreateStatusCode();
+        assert courierCreateStatusCode == 400;
     }
 
     @Test
     public void failCreatingTwoSimilarCourierTest(){
 
+        CourierHelper courier1 = new CourierHelper("duplicate_111_ninja11", "1234", "saske");
+        assert courier1.getCourierCreateStatusCode() == 201;
+        createdCouriers.add(courier1);
 
-        NewCourier firstCourier = new NewCourier("duplicate_5_new_ninja", "1234", "saske");
-        LoginCourier firstCourierLoginData = new LoginCourier("duplicate_5_new_ninja","1234");
-        NewCourier secondCourier = new NewCourier("duplicate_5_new_ninja", "1234", "saske");
+        CourierHelper courier2 = new CourierHelper("duplicate_111_ninja11", "1234", "saske");
+        assert courier2.getCourierCreateStatusCode() == 409;
 
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(firstCourier)
-            .when()
-            .post("/api/v1/courier")
-            .then().statusCode(201);
+    }
 
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(firstCourier)
-            .when()
-            .post("/api/v1/courier")
-            .then().statusCode(409);
+    @After
+    public void rollBack(){
 
-        // Login and deleting first created courier
-        LoginCourierResponse response = given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(firstCourierLoginData)
-            .when()
-            .post("/api/v1/courier/login")
-            .body()
-            .as(LoginCourierResponse.class);
-
-        DeleteCourier deleteCourierData = new DeleteCourier(response.getId());
-
-        given()
-            .header("Content-type", "application/json")
-            .and()
-            .body(deleteCourierData)
-            .when()
-            .delete("/api/v1/courier/"+response.getId())
-            .then().statusCode(200);
+        for (CourierHelper elem: createdCouriers)
+        {
+            elem.deleteCourier();
+        }
     }
 
 
