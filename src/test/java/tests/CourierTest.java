@@ -1,15 +1,10 @@
 package tests;
 import data.*;
 import fixtures.CourierHelper;
-import io.restassured.internal.RestAssuredResponseImpl;
-import io.restassured.response.ResponseBody;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static io.restassured.RestAssured.given;
 import io.restassured.RestAssured;
-
 import java.util.ArrayList;
 
 public class CourierTest {

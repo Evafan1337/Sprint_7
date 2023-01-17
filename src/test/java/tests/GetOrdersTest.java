@@ -1,31 +1,34 @@
 package tests;
 import data.GetOrdersResponse;
+import fixtures.GetOrdersHelper;
 import io.restassured.RestAssured;
-import io.restassured.internal.RestAssuredResponseImpl;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-
-import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertNotNull;
 
 
 public class GetOrdersTest {
 
+    public GetOrdersHelper correctRequest;
+    public GetOrdersResponse correctResponse;
+    public int correctResponseStatusCode;
+
     @Before
     public void setUp(){
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
+
+        correctRequest = new GetOrdersHelper();
+        correctResponse = correctRequest.getOrdersRequest().as(GetOrdersResponse.class);
+        correctResponseStatusCode = correctRequest.getOrdersRequestStatusCode();
     }
 
     @Test
     public void getOrders(){
+        assertNotNull(correctResponse.getPageInfo());
+    }
 
-        GetOrdersResponse response = given()
-                .header("Content-type", "application/json")
-                .and()
-                .when()
-                .get("/api/v1/orders")
-                .body()
-                .as(GetOrdersResponse.class);
+    @Test
+    public void getOrdersRequestCorrectStatusCode(){
+        assert correctResponseStatusCode == 200;
     }
 }

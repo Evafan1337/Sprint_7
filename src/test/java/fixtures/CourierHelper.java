@@ -1,11 +1,9 @@
 package fixtures;
-
 import data.DeleteCourier;
 import data.LoginCourier;
 import data.LoginCourierResponse;
 import data.NewCourier;
 import io.restassured.internal.RestAssuredResponseImpl;
-import io.restassured.response.ResponseBody;
 
 import static io.restassured.RestAssured.given;
 

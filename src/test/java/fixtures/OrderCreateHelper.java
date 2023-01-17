@@ -1,7 +1,5 @@
 package fixtures;
-
 import static io.restassured.RestAssured.given;
-
 import data.CreateOrder;
 import io.restassured.internal.RestAssuredResponseImpl;
 
