@@ -3,6 +3,7 @@ package data;
 public class GetOrdersResponse {
 
     private GetOrdersResponseOrders orders;
+
     private GetOrdersResponsePageInfo pageInfo;
 
     private GetOrdersResponseAvaliableStations avaliableStations;

@@ -1,16 +1,17 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GetOrdersResponseOrders {
 
-    private String orders;
+    private List<GetOrdersResponseOrdersElem> orders;
 
-    public String getOrders() {
+    public List<GetOrdersResponseOrdersElem> getOrders() {
         return orders;
     }
 
-    public void setOrders(String orders) {
+    public void setOrders(List<GetOrdersResponseOrdersElem> orders) {
         this.orders = orders;
     }
 

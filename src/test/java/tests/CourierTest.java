@@ -14,12 +14,10 @@ import java.util.ArrayList;
 
 public class CourierTest {
 
-
     ArrayList <CourierHelper> createdCouriers = new ArrayList<CourierHelper>();;
 
     @Before
     public void setUp(){
-
         RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
     }
 
