@@ -10,6 +10,8 @@ import static io.restassured.RestAssured.given;
 public class CourierHelper {
 
     RestAssuredResponseImpl courier;
+    RestAssuredResponseImpl loginCourier = null;
+
     NewCourier courierData;
     LoginCourier loginCourierData;
 
@@ -17,7 +19,9 @@ public class CourierHelper {
 
         courierData = new NewCourier(login, password, firstName);
         loginCourierData = new LoginCourier(login,password);
+    }
 
+    public void makeCreateCourierRequest(){
         courier = (RestAssuredResponseImpl) given()
             .header("Content-type", "application/json")
             .and()
@@ -27,16 +31,18 @@ public class CourierHelper {
             .body();
     }
 
-    public LoginCourierResponse getCourierLoginData(){
-        LoginCourierResponse response = given()
+    public void makeCourierLoginRequest(){
+        loginCourier = (RestAssuredResponseImpl) given()
             .header("Content-type", "application/json")
             .and()
             .body(loginCourierData)
             .when()
             .post("/api/v1/courier/login")
-            .body()
-            .as(LoginCourierResponse.class);
-        return response;
+            .body();
+    }
+
+    public LoginCourierResponse getCourierLoginData(){
+        return loginCourier.as(LoginCourierResponse.class);
     }
 
     public RestAssuredResponseImpl getCourier(){
@@ -44,7 +50,13 @@ public class CourierHelper {
     }
 
     public int getCourierId(){
-        return this.getCourierLoginData().getId();
+
+        if(this.loginCourier == null){
+            this.makeCourierLoginRequest();
+            return this.getCourierLoginData().getId();
+        } else {
+            return this.getCourierLoginData().getId();
+        }
     }
 
     public void deleteCourier(){
@@ -65,4 +77,8 @@ public class CourierHelper {
     public int getCourierCreateStatusCode(){
         return courier.getStatusCode();
     };
+
+    public int getCourierLoginStatusCode(){
+        return loginCourier.getStatusCode();
+    }
 }

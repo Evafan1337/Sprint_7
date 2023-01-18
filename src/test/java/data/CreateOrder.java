@@ -10,7 +10,6 @@ public class CreateOrder {
     public int rentTime;
     public String deliveryDate;
     public String comment;
-    //public ArrayList<String> color;
     public String[] color;
 
     public CreateOrder(String firstName, String lastName, String address, String metroStation, String phone, int rentTime, String deliveryDate, String comment, String[] color){

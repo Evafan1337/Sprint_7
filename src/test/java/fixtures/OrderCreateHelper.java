@@ -23,4 +23,8 @@ public class OrderCreateHelper {
     public RestAssuredResponseImpl getOrder(){
         return order;
     }
+
+    public int getCreatedOrderResponseStatusCode(){
+        return order.statusCode();
+    }
 }

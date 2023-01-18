@@ -14,13 +14,11 @@ public class OrderCreateTest {
     public String firstName;
     public String lastName;
     public String address;
-    //public int metroStation;
     public String metroStation;
     public String phone;
     public int rentTime;
     public String deliveryDate;
     public String comment;
-    //public ArrayList<String> color;
     public String[] color;
 
     @Before
@@ -52,7 +50,6 @@ public class OrderCreateTest {
     @Test
     public void createOrder(){
         OrderCreateHelper orderRequest = new OrderCreateHelper(firstName, lastName, address, metroStation, phone, rentTime, deliveryDate, comment, color);
-        CreateOrderResponse response = orderRequest.getOrder().as(CreateOrderResponse.class);
-        assertNotNull(response.getTrack());
+        assert orderRequest.getCreatedOrderResponseStatusCode() == 201;
     }
 }
